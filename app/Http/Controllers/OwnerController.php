@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
+
 class OwnerController extends Controller
 {
     /**
@@ -14,14 +15,13 @@ class OwnerController extends Controller
      */
     public function index()
     {
-        if(Auth::check()){
+        if (Auth::check()) {
 
-            
+
             $objs = DB::select('select * from users where role_id=2');
             return view('owner.index')
                 ->with('objs', $objs);
-        }
-        else{
+        } else {
             return redirect()->route('login');
         }
     }

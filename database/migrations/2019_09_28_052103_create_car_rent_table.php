@@ -18,7 +18,7 @@ class CreateCarRentTable extends Migration
             $table->tinyInteger('user_id');
             $table->tinyInteger('car_id');
             $table->tinyInteger('owner_id');
-            $table->tinyInteger('price');
+            $table->decimal('price', 10, 2);
             $table->date('pickup_date');
             $table->tinyInteger('status')->default(1);
 

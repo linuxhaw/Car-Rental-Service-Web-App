@@ -13,13 +13,13 @@ class CreateCarsTable extends Migration
      */
     public function up()
     {
-        
+
         Schema::create('cars', function (Blueprint $table) {
             $table->increments('car_id');
             $table->string('brand');
             $table->string('name');
             $table->string('type');
-            $table->integer('price');
+            $table->decimal('price', 10, 2);
             $table->string('car_no')->unique();
             $table->tinyInteger('status')->default(1);
             $table->tinyInteger('delete_status')->default(1);
@@ -27,7 +27,6 @@ class CreateCarsTable extends Migration
             $table->string('image2');
             $table->string('image3');
             $table->timestamps();
-        
         });
     }
 

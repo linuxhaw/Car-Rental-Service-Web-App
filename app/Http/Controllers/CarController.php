@@ -11,7 +11,7 @@ use DB;
 use Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
-    use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Input;
 
 class CarController extends Controller
 {
@@ -61,7 +61,7 @@ class CarController extends Controller
             'brand' => 'required',
             'name' => 'required',
             'type' => 'required',
-            'price' => 'required|integer|max:2147483647',
+            'price' => 'required',
             'car_no' => 'required',
             'status' => 'required',
             'img1' => 'required',
@@ -171,13 +171,13 @@ class CarController extends Controller
     {
         $cars = Car::all();
         $request_all = $request->all();
-        
+
         $this->validate($request, [
 
             'brand' => 'required',
             'name' => 'required',
             'type' => 'required',
-            'price' => 'required|integer|max:2147483647',
+            'price' => 'required',
             'car_no' => 'required',
             'status' => 'required',
 
@@ -192,10 +192,10 @@ class CarController extends Controller
         $price = $request->input('price');
         $car_no = $request->input('car_no');
         $status = $request->input('status');
-        
-        
+
+
         $destinationPath = 'images';
-        
+
         // $cars = Car::find($id);
         $cars = Car::where('car_id', $id)->first();
         $cars->owner_id = $owner_id;
@@ -206,33 +206,29 @@ class CarController extends Controller
         $cars->car_no = $car_no;
         $cars->status = $status;
 
-        if (Input::hasFile('img1')){
+        if (Input::hasFile('img1')) {
             $img1 = $request->file('img1');
             $img1->move($destinationPath, $img1->getClientOriginalName());
             $cars->image1 = $img1->getClientOriginalName();
-
         }
 
         if (Input::hasFile('img2')) {
-        
-            $img2 = $request->file('img2');        
+
+            $img2 = $request->file('img2');
             $img2->move($destinationPath, $img2->getClientOriginalName());
             $cars->image2 = $img2->getClientOriginalName();
-
         }
 
         if (Input::hasFile('img3')) {
             $img3 = $request->file('img3');
             $img3->move($destinationPath, $img3->getClientOriginalName());
             $cars->image3 = $img3->getClientOriginalName();
-
         }
-        if($cars->save()){
-       
+        if ($cars->save()) {
+
             return redirect()->back()->withSuccess('Success, Updated successfully !')
                 ->with('car_list', $cars);
-        }
-        else {
+        } else {
             // return redirect()->route('car_list');
             return redirect()->back()->withSuccess('Error, Error in car update !')
                 ->with('car_list', $cars);

@@ -21,7 +21,7 @@ class ReportController extends Controller
 
     public function pdfPreview($type = null)
     {
-        if($type == null || $type == 0){
+        if ($type == null || $type == 0) {
             $registrations = DB::select('SELECT r.*,u.name AS user_name,c.name AS car_name
             FROM 
             car_rent AS r 
@@ -30,8 +30,7 @@ class ReportController extends Controller
             JOIN cars AS c
             ON r.car_id = c.car_id
             WHERE r.status =0');
-            }
-        else{
+        } else {
             $registrations = DB::select('SELECT r.*,u.name AS user_name,c.name AS car_name
             FROM 
             car_rent AS r 
@@ -39,25 +38,23 @@ class ReportController extends Controller
             ON r.user_id = u.id
             JOIN cars AS c
             ON r.car_id = c.car_id
-            WHERE r.status =' .$type);
-
+            WHERE r.status =' . $type);
         }
-              
-    //   $users = User::orderBy('id','asc')->get();
-    // $users = User::all();
-      $view = \View::make('report.pdf_content', ['registrations'=>$registrations]);
-      $html_content = $view->render();
-      PDF::SetTitle("List of users");
-      PDF::AddPage();
 
-    // writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
-    // writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
-    
-      PDF::writeHTML($html_content, true, false, true, false, '');
-      // D is the change of these two functions. Including D parameter will avoid 
-      // loading PDF in browser and allows downloading directly
-      PDF::Output('userlist.pdf', 'D');
+        //   $users = User::orderBy('id','asc')->get();
+        // $users = User::all();
+        $view = \View::make('report.pdf_content', ['registrations' => $registrations]);
+        $html_content = $view->render();
+        PDF::SetTitle("List of users");
+        PDF::AddPage();
 
+        // writeHTML($html, $ln=true, $fill=false, $reseth=false, $cell=false, $align='')
+        // writeHTMLCell($w, $h, $x, $y, $html='', $border=0, $ln=0, $fill=0, $reseth=true, $align='', $autopadding=true)
+
+        PDF::writeHTML($html_content, true, false, true, false, '');
+        // D is the change of these two functions. Including D parameter will avoid 
+        // loading PDF in browser and allows downloading directly
+        PDF::Output('userlist.pdf', 'D');
     }
 
     public function index()
@@ -71,15 +68,14 @@ class ReportController extends Controller
                                 ON r.user_id = u.id
                                 JOIN cars AS c
                                 ON r.car_id = c.car_id
-                                WHERE r.status =' .$status);
-            
-            
-        return view('report.index')
-        ->with('car_rent', $rent);
-    }
-    else{
-        return redirect()->route('login');
-    }
+                                WHERE r.status =' . $status);
+
+
+            return view('report.index')
+                ->with('car_rent', $rent);
+        } else {
+            return redirect()->route('login');
+        }
     }
 
     /**

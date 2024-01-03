@@ -7,6 +7,7 @@ use DB;
 use Auth;
 use App\Book;
 use App\Car;
+
 class WelcomeController extends Controller
 {
     /**
@@ -18,10 +19,10 @@ class WelcomeController extends Controller
     {
 
 
-       $cars = DB::select('SELECT * from cars
-                                WHERE delete_status=1');
+        $cars = DB::select('SELECT * from cars
+                                WHERE delete_status=1 and status=1');
 
- 
+
         return view('carlisting')
             ->with('cars', $cars);
     }
@@ -39,7 +40,7 @@ class WelcomeController extends Controller
         $car = Car::where('car_id', $id)->first();
 
         if (Auth::check()) {
-            return view('booking')->with('car',$car);
+            return view('booking')->with('car', $car);
         } else {
 
             return redirect()->route('login');
@@ -54,23 +55,23 @@ class WelcomeController extends Controller
      */
     public function store(Request $request)
     {
-        
-        
+
+
         $book = Book::all();
         $request_all = $request->all();
         $this->validate($request, [
-            
-            'pickup_date' => 'required',            
-            
+
+            'pickup_date' => 'required',
+
         ]);
-        
-        
+
+
         $user_id = $request->input('user_id');
         $car_id = $request->input('car_id');
         $owner_id = $request->input('owner_id');
         $pickup_date = $request->input('pickup_date');
         $cost = $request->input('cost');
-     
+
 
         $book = new Book;
         $book->user_id = $user_id;
@@ -78,8 +79,8 @@ class WelcomeController extends Controller
         $book->owner_id = $owner_id;
         $book->pickup_date = $pickup_date;
         $book->price = $cost;
-     
-        
+
+
         $book->save();
         return redirect()->back()->withSuccess('Success, Booking successfully !')
             ->with('car_rent', $book);

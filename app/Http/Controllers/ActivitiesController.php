@@ -15,7 +15,7 @@ class ActivitiesController extends Controller
      */
     public function index()
     {
-        
+
         return view('activities.index');
     }
 
@@ -49,7 +49,7 @@ class ActivitiesController extends Controller
     public function show()
     {
         if (Auth::check()) {
-            $id=Auth::user()->id;
+            $id = Auth::user()->id;
             $rent = DB::select('SELECT r.*,u.name AS user_name,c.name AS car_name
                                 FROM 
                                 car_rent AS r 
@@ -58,12 +58,11 @@ class ActivitiesController extends Controller
                                 JOIN cars AS c
                                 ON r.car_id = c.car_id
                                 WHERE r.car_id = c.car_id');
-            
-            
-        return view('activities.index')
-        ->with('car_rent', $rent);
-        }
-        else{
+
+
+            return view('activities.index')
+                ->with('car_rent', $rent);
+        } else {
             return redirect()->route('login');
         }
     }

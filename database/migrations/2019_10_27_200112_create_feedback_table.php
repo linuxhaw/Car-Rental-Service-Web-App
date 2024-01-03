@@ -18,8 +18,7 @@ class CreateFeedbackTable extends Migration
 
             $table->increments('id');
             $table->string('name');
-            $table->string('email')->unique();
-            $table->bigInteger('phone_number')->length(17)->nullable();
+            $table->string('email');
             $table->string('message');
             $table->timestamps();
         });
